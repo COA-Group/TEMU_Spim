@@ -33,6 +33,6 @@
 
 - cd 负责文件夹
 
-- git add . （将当前文件夹的所有内容添加至commit中）
+- git add 修改过的文件 （将当前文件夹的所有内容添加至commit中）
 - git commit -m "名称"（生成commit并命名）
-- git push origin branch_name（将commit提交到仓库的branch_name分支上）
+- git push -u origin branch_name（将commit提交到仓库的branch_name分支上）
