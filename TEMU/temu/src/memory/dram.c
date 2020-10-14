@@ -1,6 +1,6 @@
-#include "common.h"
-#include "burst.h"
-#include "misc.h"
+#include "../TEMU/temu/include/common.h"
+#include "../TEMU/temu/include/memory/burst.h"
+#include "../TEMU/temu/include/misc.h"
 
 /* Simulate the (main) behavor of DRAM.
  * Although this will lower the performace of TEMU, it makes

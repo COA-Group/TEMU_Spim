@@ -1,5 +1,5 @@
-#include "helper.h"
-#include "all-instr.h"
+#include "../TEMU/temu/include/cpu/helper.h"
+#include "../TEMU/temu/include/cpu/all-instr.h"
 
 typedef void (*op_fun)(uint32_t);
 static make_helper(_2byte_esc);

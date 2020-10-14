@@ -1,5 +1,5 @@
-#include "helper.h"
-#include "monitor.h"
+#include "../TEMU/temu/include/cpu/helper.h"
+#include "../TEMU/temu/include/monitor/monitor.h"
 
 extern char assembly[80];
 

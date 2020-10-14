@@ -25,10 +25,41 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    ../TEMU/temu/src/cpu/exec.c \
+    ../TEMU/temu/src/cpu/i-type.c \
+    ../TEMU/temu/src/cpu/reg.c \
+    ../TEMU/temu/src/cpu/r-type.c \
+    ../TEMU/temu/src/cpu/special.c \
+    ../TEMU/temu/src/memory/dram.c \
+    ../TEMU/temu/src/memory/memory.c \
+    ../TEMU/temu/src/monitor/cpu-exec.c \
+    ../TEMU/temu/src/monitor/expr.c \
+    ../TEMU/temu/src/monitor/monitor.c \
+    ../TEMU/temu/src/monitor/ui.c \
+    ../TEMU/temu/src/monitor/watchpoint.c \
+    ../TEMU/temu/src/initsys.c
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    ../TEMU/temu/include/common.h \
+    ../TEMU/temu/include/debug.h \
+    ../TEMU/temu/include/macro.h \
+    ../TEMU/temu/include/misc.h \
+    ../TEMU/temu/include/temu.h \
+    ../TEMU/temu/include/cpu/all-instr.h \
+    ../TEMU/temu/include/cpu/helper.h \
+    ../TEMU/temu/include/cpu/i-type.h \
+    ../TEMU/temu/include/cpu/operand.h \
+    ../TEMU/temu/include/cpu/reg.h \
+    ../TEMU/temu/include/cpu/r-type.h \
+    ../TEMU/temu/include/cpu/special.h \
+    ../TEMU/temu/include/memory/burst.h \
+    ../TEMU/temu/include/memory/memory.h \
+    ../TEMU/temu/include/monitor/expr.h \
+    ../TEMU/temu/include/monitor/monitor.h \
+    ../TEMU/temu/include/monitor/watchpoint.h \
+    ../TEMU/temu/include/initsys.h
 
 FORMS += \
         mainwindow.ui

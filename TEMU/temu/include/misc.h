@@ -1,7 +1,7 @@
 #ifndef __LIB_MISC_H__
 #define __LIB_MISC_H__
 
-#include "common.h"
+#include "../TEMU/temu/include/common.h"
 
 inline static void memcpy_with_mask(void *dest, const void *src, size_t len, uint8_t *mask) {
 	int i;

@@ -1,6 +1,6 @@
-#include "helper.h"
-#include "monitor.h"
-#include "reg.h"
+#include "../TEMU/temu/include/cpu/helper.h"
+#include "../TEMU/temu/include/monitor/monitor.h"
+#include "../TEMU/temu/include/cpu/reg.h"
 
 extern uint32_t instr;
 extern char assembly[80];

@@ -1,7 +1,7 @@
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
 
-#include "common.h"
+#include "../TEMU/temu/include/common.h"
 
 #define HW_MEM_SIZE (128 * 1024 * 1024)
 

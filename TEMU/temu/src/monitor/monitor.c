@@ -1,4 +1,4 @@
-#include "temu.h"
+#include "../TEMU/temu/include/temu.h"
 
 #define ENTRY_START 0x00000000
 
@@ -17,12 +17,12 @@ static void init_log() {
 	Assert(log_fp, "Can not open 'log.txt'");
 }
 
-static void welcome() {
-	printf("Welcome to TEMU!\nThe executable is %s.\nFor help, type \"help\"\n",
-			exec_file);
+static char* welcome() {
+    char* str = "Welcome to TEMU!\nFor help, type \"help\"\n";
+    return str;
 }
 
-void init_monitor(int argc, char *argv[]) {
+char* init_monitor(int argc, char *argv[]) {
 	/* Perform some global initialization */
 
 	/* Open the log file. */
@@ -36,12 +36,12 @@ void init_monitor(int argc, char *argv[]) {
 	init_wp_pool();
 
 	/* Display welcome message. */
-	welcome();
+    return welcome();
 }
 
 static void load_entry() {
 	int ret;
-	FILE *fp = fopen("entry", "rb");
+    FILE *fp = fopen("../TEMU/entry", "rb");
 	Assert(fp, "Can not open 'entry'");
 	if(fp == NULL)
 		printf("Can not open 'entry'\n");

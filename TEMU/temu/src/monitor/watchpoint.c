@@ -1,5 +1,5 @@
-#include "watchpoint.h"
-#include "expr.h"
+#include "../TEMU/temu/include/monitor/watchpoint.h"
+#include "../TEMU/temu/include/monitor/expr.h"
 
 #define NR_WP 32
 

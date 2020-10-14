@@ -1,4 +1,4 @@
-#include "temu.h"
+#include "../TEMU/temu/include/temu.h"
 #include <stdlib.h>
 
 CPU_state cpu;

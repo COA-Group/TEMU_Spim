@@ -1,5 +1,5 @@
-#include "monitor.h"
-#include "temu.h"
+#include "../TEMU/temu/include/monitor/monitor.h"
+#include "../TEMU/temu/include/temu.h"
 
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -10,7 +10,9 @@ void cpu_exec(uint32_t);
 void display_reg();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
-char* rl_gets() {
+
+/*
+ * char* rl_gets() {
 	static char *line_read = NULL;
 
 	if (line_read) {
@@ -26,6 +28,7 @@ char* rl_gets() {
 
 	return line_read;
 }
+*/
 
 static int cmd_c(char *args) {
 	cpu_exec(-1);
@@ -75,19 +78,15 @@ static int cmd_help(char *args) {
 	}
 	return 0;
 }
-
+/*
 void ui_mainloop() {
 	while(1) {
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
 
-		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
 		if(cmd == NULL) { continue; }
 
-		/* treat the remaining string as the arguments,
-		 * which may need further parsing
-		 */
 		char *args = cmd + strlen(cmd) + 1;
 		if(args >= str_end) {
 			args = NULL;
@@ -104,3 +103,6 @@ void ui_mainloop() {
 		if(i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
 	}
 }
+*/
+
+

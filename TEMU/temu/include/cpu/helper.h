@@ -1,7 +1,7 @@
 #ifndef __HELPER_H__
 #define __HELPER_H__
 
-#include "temu.h"
+#include "../TEMU/temu/include/temu.h"
 #include "operand.h"
 
 #define FUNC_MASK 0x0000003F

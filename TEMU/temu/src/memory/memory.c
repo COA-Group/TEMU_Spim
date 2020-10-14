@@ -1,4 +1,4 @@
-#include "common.h"
+#include "../TEMU/temu/include/common.h"
 
 uint32_t dram_read(uint32_t, size_t);
 void dram_write(uint32_t, size_t, uint32_t);
