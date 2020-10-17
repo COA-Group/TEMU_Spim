@@ -37,7 +37,7 @@ uint8_t *hw_mem = (void *)dram;
 typedef struct {
 	uint8_t buf[NR_COL];
 	int32_t row_idx;
-	bool valid;
+    bool valid;
 } RB;
 
 RB rowbufs[NR_RANK][NR_BANK];

@@ -1,5 +1,5 @@
 #include "../TEMU/temu/include/temu.h"
-
+#include "assembly.h"
 #define ENTRY_START 0x00000000
 
 char *exec_file;
@@ -66,4 +66,7 @@ void restart() {
 
 	/* Initialize DRAM. */
 	init_ddr3();
+
+    init_exec();
 }
+

@@ -1,6 +1,9 @@
 #include "../TEMU/temu/include/monitor/monitor.h"
 #include "../TEMU/temu/include/temu.h"
+#include "outputfunc.h"
+#include "ui_buffer.h"
 
+#include <string.h>
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -61,11 +64,19 @@ static int cmd_help(char *args) {
 	char *arg = strtok(NULL, " ");
 	int i;
 
+
 	if(arg == NULL) {
 		/* no argument given */
 		for(i = 0; i < NR_CMD; i ++) {
-			printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
-		}
+            if(i == 0)
+                strcpy(result_buf , cmd_table[i].name);
+            else
+                strcat(result_buf , cmd_table[i].name);
+            strcat(result_buf , " - ");
+            strcat(result_buf , cmd_table[i].description);
+            strcat(result_buf , "\n");
+        }
+        printf("%s ", result_buf);
 	}
 	else {
 		for(i = 0; i < NR_CMD; i ++) {
@@ -78,31 +89,33 @@ static int cmd_help(char *args) {
 	}
 	return 0;
 }
-/*
-void ui_mainloop() {
-	while(1) {
-		char *str = rl_gets();
-		char *str_end = str + strlen(str);
 
-		char *cmd = strtok(str, " ");
-		if(cmd == NULL) { continue; }
+int ui_solvecmd(char *str) {
+    char *str_end = str + strlen(str);
 
-		char *args = cmd + strlen(cmd) + 1;
-		if(args >= str_end) {
-			args = NULL;
-		}
+    char *cmd = strtok(str, " ");
+    if(cmd == NULL) { return -1; }
 
-		int i;
-		for(i = 0; i < NR_CMD; i ++) {
-			if(strcmp(cmd, cmd_table[i].name) == 0) {
-				if(cmd_table[i].handler(args) < 0) { return; }
-				break;
-			}
-		}
+    char *args = cmd + strlen(cmd) + 1;
+    if(args >= str_end) {
+        args = NULL;
+    }
+    int i;
+    for(i = 0; i < NR_CMD; i ++) {
+        if(strcmp(cmd, cmd_table[i].name) == 0) {
+            if(cmd_table[i].handler(args) < 0) { return -2; }
+            break;
+        }
+    }
 
-		if(i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
-	}
+    if(i == NR_CMD) {
+        strcpy(result_buf , "Unknown command '");
+        strcat(result_buf , cmd);
+        strcat(result_buf , "'\n");
+        return -3;
+    }
+    return i;
 }
-*/
+
 
 

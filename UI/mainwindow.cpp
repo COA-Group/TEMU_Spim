@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qbytearray.h"
-#include "../TEMU/temu/include/initsys.h"
+#include "outputfunc.h"
+#include "ui_buffer.h"
+#include <qdebug.h>
+
 using namespace std;
 MainWindow::MainWindow(int argc, char *argv[],QWidget *parent) :
     QMainWindow(parent),
@@ -9,7 +12,8 @@ MainWindow::MainWindow(int argc, char *argv[],QWidget *parent) :
 {
     char* str = initSys(argc , argv);
     ui->setupUi(this);
-    ui->textEdit->setText(QString(str));
+    ui->cmd->setText(QString(str));
+    ui->text->setText(QString(ui_inst));
 }
 
 MainWindow::~MainWindow()
@@ -19,9 +23,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    QString str = ui->textEdit->toPlainText();
+    QString str = ui->textEdit_2->toPlainText();
     char*  ch;
     QByteArray ba = str.toLatin1();
     ch=ba.data();
-    printf("%s",ch);
+    qDebug()<<ch;
+
+    int i = ui_solvecmd(ch);
+//    qDebug()<<result_buf;
+    if(i == -2)
+        QApplication::exit();
+    ui->cmd->setText(QString(result_buf));
+    if(strcmp(ch,"c") == 0){
+        ui->cmd->setText(QString::fromUtf8(result_buf));
+    }
 }

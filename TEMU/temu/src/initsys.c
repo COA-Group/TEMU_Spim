@@ -1,4 +1,4 @@
-#include "../TEMU/temu/include/initsys.h"
+#include "outputfunc.h"
 
 char* init_monitor(int, char *[]);
 void restart();

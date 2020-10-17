@@ -1,6 +1,6 @@
 #include "../TEMU/temu/include/cpu/helper.h"
 #include "../TEMU/temu/include/cpu/all-instr.h"
-
+#include "ui_buffer.h"
 typedef void (*op_fun)(uint32_t);
 static make_helper(_2byte_esc);
 

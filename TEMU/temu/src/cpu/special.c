@@ -1,6 +1,6 @@
 #include "../TEMU/temu/include/cpu/helper.h"
 #include "../TEMU/temu/include/monitor/monitor.h"
-
+#include "ui_buffer.h"
 extern char assembly[80];
 
 /* invalid opcode */
@@ -23,9 +23,9 @@ make_helper(inv) {
 
 /* stop temu */
 make_helper(temu_trap) {
-
-	printf("\33[1;31mtemu: HIT GOOD TRAP\33[0m at $pc = 0x%08x\n\n", cpu.pc);
-
+    char res[128];
+    sprintf(res , "temu: HIT GOOD TRAP at $pc = 0x%08x\n\n", cpu.pc);
+    strcpy(result_buf , res);
 	temu_state = END;
 
 }

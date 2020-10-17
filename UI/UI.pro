@@ -59,7 +59,9 @@ HEADERS += \
     ../TEMU/temu/include/monitor/expr.h \
     ../TEMU/temu/include/monitor/monitor.h \
     ../TEMU/temu/include/monitor/watchpoint.h \
-    ../TEMU/temu/include/initsys.h
+    ui_buffer.h \
+    assembly.h \
+    outputfunc.h
 
 FORMS += \
         mainwindow.ui

@@ -1,6 +1,7 @@
 #include "../TEMU/temu/include/monitor/monitor.h"
 #include "../TEMU/temu/include/cpu/helper.h"
-
+#include "ui_buffer.h"
+#include "assembly.h"
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
@@ -14,6 +15,7 @@ void exec(uint32_t);
 
 char assembly[80];
 char asm_buf[128];
+char inst[1024*128];
 
 void print_bin_instr(uint32_t pc) {
 	int i;
@@ -26,8 +28,9 @@ void print_bin_instr(uint32_t pc) {
 
 /* Simulate how the MiniMIPS32 CPU works. */
 void cpu_exec(volatile uint32_t n) {
+    strcpy(cmd_inst , "");
 	if(temu_state == END) {
-		printf("Program execution has ended. To restart the program, exit TEMU and run again.\n");
+        strcpy(result_buf , "Program execution has ended. To restart the program, exit TEMU and run again.\n");
 		return;
 	}
 	temu_state = RUNNING;
@@ -36,6 +39,7 @@ void cpu_exec(volatile uint32_t n) {
 	volatile uint32_t n_temp = n;
 #endif
 
+    strcpy(inst , "");
 	for(; n > 0; n --) {
 #ifdef DEBUG
 		uint32_t pc_temp = cpu.pc;
@@ -51,20 +55,56 @@ void cpu_exec(volatile uint32_t n) {
 
 		cpu.pc += 4;
 
+        print_bin_instr(pc_temp);
+        strcat(asm_buf, assembly);
+        strcat(inst , asm_buf);
+        strcat(inst , "\n");
+
 #ifdef DEBUG
 		print_bin_instr(pc_temp);
 		strcat(asm_buf, assembly);
-		Log_write("%s\n", asm_buf);
-		if(n_temp < MAX_INSTR_TO_PRINT) {
-			printf("%s\n", asm_buf);
-		}
+        Log_write("%s\n", asm_buf);
+        if(n_temp < MAX_INSTR_TO_PRINT) {
+            printf("%s\n", asm_buf);
+        }
 #endif
-
 		/* TODO: check watchpoints here. */
 
-
-		if(temu_state != RUNNING) { return; }
+        if(temu_state != RUNNING) {
+            strcpy(cmd_inst , inst);
+            return;
+        }
 	}
 
-	if(temu_state == RUNNING) { temu_state = STOP; }
+    if(temu_state == RUNNING) {
+        temu_state = STOP;
+    }
+}
+
+void init_exec(){
+    temu_state = RUNNING;
+    volatile uint32_t n = -1;
+
+    for(; n > 0; n --) {
+        uint32_t pc_temp = cpu.pc;
+        /* Execute one instruction, including instruction fetch,
+         * instruction decode, and the actual execution. */
+        exec(cpu.pc);
+
+        cpu.pc += 4;
+        print_bin_instr(pc_temp);
+        strcat(asm_buf, assembly);
+        strcat(inst , asm_buf);
+        strcat(inst , "\n");
+        if(temu_state != RUNNING) {
+            strcpy(ui_inst , inst);
+            cpu.pc = 0x00000000;
+            temu_state = STOP;
+            return;
+        }
+    }
+
+    if(temu_state == RUNNING) {
+        temu_state = STOP;
+    }
 }
