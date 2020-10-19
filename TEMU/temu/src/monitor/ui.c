@@ -44,6 +44,26 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args) {
+    // get number
+	char *arg = strtok(NULL," ");
+    if(arg == NULL){
+        cpu_exec(1);
+        return 0;
+    }
+	int num;
+    // input arg into num
+    sscanf(arg, "%d", &num);
+    if(num < 1){
+        printf("parameter cannot be less than 1(default is 1)\n");
+        return 0;
+    }
+    for(int i = 0;i < num;i++){
+        cpu_exec(1);
+    }
+    return 0;
+}
+
 static struct {
 	char *name;
 	char *description;
@@ -51,9 +71,10 @@ static struct {
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
-	{ "q", "Exit TEMU", cmd_q }
+    { "q", "Exit TEMU", cmd_q },
 
 	/* TODO: Add more commands */
+	{ "si", "Single step execution of instruction", cmd_si }
 
 };
 

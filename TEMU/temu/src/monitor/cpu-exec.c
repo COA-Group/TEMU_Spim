@@ -28,7 +28,7 @@ void print_bin_instr(uint32_t pc) {
 
 /* Simulate how the MiniMIPS32 CPU works. */
 void cpu_exec(volatile uint32_t n) {
-    strcpy(cmd_inst , "");
+    strcpy(result_buf , "");
 	if(temu_state == END) {
         strcpy(result_buf , "Program execution has ended. To restart the program, exit TEMU and run again.\n");
 		return;
@@ -42,11 +42,11 @@ void cpu_exec(volatile uint32_t n) {
     strcpy(inst , "");
 	for(; n > 0; n --) {
 #ifdef DEBUG
-		uint32_t pc_temp = cpu.pc;
-		if((n & 0xffff) == 0) {
-			
-			fputc('.', stderr);
-		}
+        uint32_t pc_temp = cpu.pc;
+        if((n & 0xffff) == 0) {
+
+            fputc('.', stderr);
+        }
 #endif
 
 		/* Execute one instruction, including instruction fetch,
@@ -60,18 +60,9 @@ void cpu_exec(volatile uint32_t n) {
         strcat(inst , asm_buf);
         strcat(inst , "\n");
 
-#ifdef DEBUG
-		print_bin_instr(pc_temp);
-		strcat(asm_buf, assembly);
-        Log_write("%s\n", asm_buf);
-        if(n_temp < MAX_INSTR_TO_PRINT) {
-            printf("%s\n", asm_buf);
-        }
-#endif
 		/* TODO: check watchpoints here. */
 
         if(temu_state != RUNNING) {
-            strcpy(cmd_inst , inst);
             return;
         }
 	}

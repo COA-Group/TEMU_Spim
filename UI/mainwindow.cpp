@@ -37,4 +37,8 @@ void MainWindow::on_pushButton_clicked()
     if(strcmp(ch,"c") == 0){
         ui->cmd->setText(QString::fromUtf8(result_buf));
     }
+    if(strncmp(ch,"si",2) == 0){
+        qDebug()<<result_buf;
+        ui->cmd->setText(QString::fromUtf8(result_buf));
+    }
 }
