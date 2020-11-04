@@ -1,11 +1,12 @@
 #include "../TEMU/temu/include/temu.h"
-#include "assembly.h"
+#include "inst_decode.h"
 #define ENTRY_START 0x00000000
 
 char *exec_file;
 uint8_t *hw_mem;
 CPU_state cpu;
 
+void display_reg();
 void init_regex();
 void init_wp_pool();
 void init_ddr3();
@@ -35,6 +36,7 @@ char* init_monitor(int argc, char *argv[]) {
 	/* Initialize the watchpoint pool. */
 	init_wp_pool();
 
+    display_reg();
 	/* Display welcome message. */
     return welcome();
 }
@@ -67,6 +69,6 @@ void restart() {
 	/* Initialize DRAM. */
 	init_ddr3();
 
-    init_exec();
+    init_decode();
 }
 

@@ -18,7 +18,7 @@ typedef struct {
 	uint32_t zero, at, v0, v1, a0, a1, a2, a3;
 	uint32_t t0, t1, t2, t3, t4, t5, t6, t7;
 	uint32_t s0, s1, s2, s3, s4, s5, s6, s7;
-	uint32_t t8, t9, k1, k2, gp, sp, fp, ra;
+    uint32_t t8, t9, k0, k1, gp, sp, fp, ra;
      };
 	uint32_t pc;
 	uint32_t hi, lo;

@@ -25,6 +25,7 @@ make_helper(inv) {
 make_helper(temu_trap) {
     char res[128];
     sprintf(res , "temu: HIT GOOD TRAP at $pc = 0x%08x\n\n", cpu.pc);
+    sprintf(assembly, "HIT GOOD TEMP");
     strcpy(result_buf , res);
 	temu_state = END;
 

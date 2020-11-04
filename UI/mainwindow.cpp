@@ -13,7 +13,10 @@ MainWindow::MainWindow(int argc, char *argv[],QWidget *parent) :
     char* str = initSys(argc , argv);
     ui->setupUi(this);
     ui->cmd->setText(QString(str));
+    ui->regInfo->setText(reg_buf);
     ui->text->setText(QString(ui_inst));
+    ui->regInfo->setLineWrapMode(QTextBrowser::NoWrap);
+    ui->cmd->setLineWrapMode(QTextBrowser::NoWrap);
 }
 
 MainWindow::~MainWindow()
@@ -21,24 +24,32 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    QString str = ui->textEdit_2->toPlainText();
+void MainWindow::action_cmd(){
+    QString str = ui->lineEdit->text();
     char*  ch;
     QByteArray ba = str.toLatin1();
     ch=ba.data();
     qDebug()<<ch;
 
     int i = ui_solvecmd(ch);
-//    qDebug()<<result_buf;
     if(i == -2)
         QApplication::exit();
-    ui->cmd->setText(QString(result_buf));
-    if(strcmp(ch,"c") == 0){
-        ui->cmd->setText(QString::fromUtf8(result_buf));
-    }
-    if(strncmp(ch,"si",2) == 0){
-        qDebug()<<result_buf;
-        ui->cmd->setText(QString::fromUtf8(result_buf));
+    ui->cmd->setText(QString::fromUtf8(result_buf));
+    if(strncmp(ch,"info" , 4) == 0 ||
+       strcmp(ch , "c") == 0 ||
+       strncmp(ch , "si" , 2) == 0){
+        ui->regInfo->setText(QString::fromUtf8(reg_buf));
     }
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    this->action_cmd();
+}
+
+void MainWindow::on_lineEdit_returnPressed()
+{
+    this->action_cmd();
+}
+
+

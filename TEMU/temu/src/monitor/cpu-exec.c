@@ -1,7 +1,10 @@
 #include "../TEMU/temu/include/monitor/monitor.h"
 #include "../TEMU/temu/include/cpu/helper.h"
 #include "ui_buffer.h"
-#include "assembly.h"
+#include "inst_decode.h"
+//addadd
+#include "../TEMU/temu/include/monitor/watchpoint.h"
+//addadd
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
@@ -13,17 +16,17 @@ int temu_state = STOP;
 
 void exec(uint32_t);
 
-char assembly[80];
-char asm_buf[128];
-char inst[1024*128];
-
+//addadd
+extern WP *head;
+uint32_t expr(char *e, bool *success);
+//addadd
 void print_bin_instr(uint32_t pc) {
 	int i;
-	int l = sprintf(asm_buf, "%8x:   ", pc);
+    int l = sprintf(asm_buf, "0x%08x:\t", pc);
 	for(i = 3; i >= 0; i --) {
 		l += sprintf(asm_buf + l, "%02x ", instr_fetch(pc + i, 1));
 	}
-	sprintf(asm_buf + l, "%*.s", 8, "");
+    sprintf(asm_buf + l, "\t");
 }
 
 /* Simulate how the MiniMIPS32 CPU works. */
@@ -44,7 +47,6 @@ void cpu_exec(volatile uint32_t n) {
 #ifdef DEBUG
         uint32_t pc_temp = cpu.pc;
         if((n & 0xffff) == 0) {
-
             fputc('.', stderr);
         }
 #endif
@@ -61,12 +63,29 @@ void cpu_exec(volatile uint32_t n) {
         strcat(inst , "\n");
 
 		/* TODO: check watchpoints here. */
-
+        //addadd
+        uint32_t num;
+        bool success;
+        WP *wp = head;
+        while(wp != NULL){
+            num = expr(wp->expr, &success);
+            if(num != wp->value){//当同时触发多个监视点时，显示全部监视点的信息
+                sprintf(result_buf+strlen(result_buf),"\nTrigger watchpoint!\n"
+                                                      "watchpoint no:\t%-4d\n"
+                                                      "expr:\t\t\"%s\"\n"
+                                                      "oldvalue:\t\t%-4d\n"
+                                                      "new value:\t\t%-4d\n",
+                       wp->NO, wp->expr, wp->value, num);
+                wp->value = num;
+                temu_state = STOP;
+            }
+            wp = wp->next;
+        }
+        //addadd
         if(temu_state != RUNNING) {
             return;
         }
 	}
-
     if(temu_state == RUNNING) {
         temu_state = STOP;
     }

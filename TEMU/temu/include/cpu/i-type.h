@@ -2,6 +2,8 @@
 #define __ITYPE_H__
 
 make_helper(lui);
-make_helper(ori);
+decode_helper(d_lui);
 
+make_helper(ori);
+decode_helper(d_ori);
 #endif

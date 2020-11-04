@@ -1,12 +1,12 @@
 #include "../TEMU/temu/include/cpu/helper.h"
 #include "../TEMU/temu/include/cpu/all-instr.h"
-#include "ui_buffer.h"
+
 typedef void (*op_fun)(uint32_t);
 static make_helper(_2byte_esc);
 
 Operands ops_decoded;
 uint32_t instr;
-	
+
 
 /* TODO: Add more instructions!!! */
 
@@ -30,21 +30,21 @@ op_fun opcode_table [64] = {
 };
 
 op_fun _2byte_opcode_table [64] = {
-/* 0x00 */	inv, inv, inv, inv, 
-/* 0x04 */	inv, inv, inv, inv, 
-/* 0x08 */	inv, inv, inv, inv, 
-/* 0x0c */	inv, inv, inv, inv, 
-/* 0x10 */	inv, inv, inv, inv, 
-/* 0x14 */	inv, inv, inv, inv, 
-/* 0x18 */	inv, inv, inv, inv, 
-/* 0x1c */	inv, inv, inv, inv, 
-/* 0x20 */	inv, inv, inv, inv, 
+/* 0x00 */	inv, inv, inv, inv,
+/* 0x04 */	inv, inv, inv, inv,
+/* 0x08 */	inv, inv, inv, inv,
+/* 0x0c */	inv, inv, inv, inv,
+/* 0x10 */	inv, inv, inv, inv,
+/* 0x14 */	inv, inv, inv, inv,
+/* 0x18 */	inv, inv, inv, inv,
+/* 0x1c */	inv, inv, inv, inv,
+/* 0x20 */	inv, inv, inv, inv,
 /* 0x24 */	and, inv, inv, inv,
-/* 0x28 */	inv, inv, inv, inv, 
-/* 0x2c */	inv, inv, inv, inv, 
-/* 0x30 */	inv, inv, inv, inv, 
+/* 0x28 */	inv, inv, inv, inv,
+/* 0x2c */	inv, inv, inv, inv,
+/* 0x30 */	inv, inv, inv, inv,
 /* 0x34 */	inv, inv, inv, inv,
-/* 0x38 */	inv, inv, inv, inv, 
+/* 0x38 */	inv, inv, inv, inv,
 /* 0x3c */	inv, inv, inv, inv
 };
 

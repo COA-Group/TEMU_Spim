@@ -26,10 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+    ../TEMU/temu/src/initsys.c \
     ../TEMU/temu/src/cpu/exec.c \
     ../TEMU/temu/src/cpu/i-type.c \
-    ../TEMU/temu/src/cpu/reg.c \
     ../TEMU/temu/src/cpu/r-type.c \
+    ../TEMU/temu/src/cpu/reg.c \
     ../TEMU/temu/src/cpu/special.c \
     ../TEMU/temu/src/memory/dram.c \
     ../TEMU/temu/src/memory/memory.c \
@@ -38,7 +39,12 @@ SOURCES += \
     ../TEMU/temu/src/monitor/monitor.c \
     ../TEMU/temu/src/monitor/ui.c \
     ../TEMU/temu/src/monitor/watchpoint.c \
-    ../TEMU/temu/src/initsys.c
+    ../TEMU/temu/src/decode_tool/decode.c \
+    ../TEMU/temu/src/decode_tool/fake_exec.c \
+    ../TEMU/temu/src/decode_tool/d_i_type.c \
+    ../TEMU/temu/src/decode_tool/d_r_type.c \
+    ../TEMU/temu/src/decode_tool/d_special.c
+
 
 HEADERS += \
         mainwindow.h \
@@ -60,8 +66,8 @@ HEADERS += \
     ../TEMU/temu/include/monitor/monitor.h \
     ../TEMU/temu/include/monitor/watchpoint.h \
     ui_buffer.h \
-    assembly.h \
-    outputfunc.h
+    outputfunc.h \
+    inst_decode.h \
 
 FORMS += \
         mainwindow.ui
