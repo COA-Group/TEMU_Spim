@@ -10,9 +10,8 @@ void display_reg() {
         int i;
         int k = 0;
         int j = 0;
-        j = sprintf(reg_buf ,"%s\t0x%08x\t%d\n",  regfile[0], regfile[0], cpu.gpr[0]._32, cpu.gpr[0]._32);
 
-        for(i = 1; i < 32; i ++) {
+        for(i = 0; i < 32; i ++) {
             j += sprintf(reg_buf + j, "%s\t0x%08x\t%d\n", regfile[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
         }
         j += sprintf(reg_buf + j ,"%s\t0x%08x\t%d\n", "$pc", cpu.pc, cpu.pc);

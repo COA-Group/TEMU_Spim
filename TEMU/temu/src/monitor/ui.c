@@ -17,7 +17,6 @@ extern WP *head;
 void cpu_exec(uint32_t);
 
 void display_reg();
-
 static int cmd_c(char *args) {
 	cpu_exec(-1);
     display_reg();
@@ -231,20 +230,20 @@ static int cmd_x(char *args){
        return 0;
     }
     for(i = 0; i < range; i++){
-        if(i%4 == 0)
-            j += sprintf(result_buf + j , "addr:%d\t",addr);
-        k = mem_read(addr + i * 4, 4);
-
-        j += sprintf(result_buf + j , "0x%08x ", k);
-        if(i%4 == 3)
-           j += sprintf(result_buf + j , "\n");
+        if(i%4 == 0){
+            j += sprintf(result_buf + j , "[0x%08x]\t",addr + i * 4);
         }
-        return 0;
+        k = mem_read(addr + i * 4, 4);
+        j += sprintf(result_buf + j , "0x%08x       ", k);
+        if(i%4 == 3){
+            j += sprintf(result_buf + j , "\n");
+        }
+    }
+    return 0;
 }//scan
 
 int ui_solvecmd(char *str) {
     char *str_end = str + strlen(str);
-
     char *cmd = strtok(str, " ");
     if(cmd == NULL) { return -1; }
 

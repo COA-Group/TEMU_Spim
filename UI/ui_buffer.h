@@ -1,5 +1,6 @@
 #ifndef UI_BUFFER_H
 #define UI_BUFFER_H
+
 #define MAX_LEN 128
 #define MAX_HELP 16
 #define MAX_INST 1024

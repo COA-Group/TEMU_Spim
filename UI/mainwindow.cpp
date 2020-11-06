@@ -30,7 +30,6 @@ void MainWindow::action_cmd(){
     QByteArray ba = str.toLatin1();
     ch=ba.data();
     qDebug()<<ch;
-
     int i = ui_solvecmd(ch);
     if(i == -2)
         QApplication::exit();
@@ -38,8 +37,9 @@ void MainWindow::action_cmd(){
     if(strncmp(ch,"info" , 4) == 0 ||
        strcmp(ch , "c") == 0 ||
        strncmp(ch , "si" , 2) == 0){
-        ui->regInfo->setText(QString::fromUtf8(reg_buf));
+       ui->regInfo->setText(QString::fromUtf8(reg_buf));
     }
+
 }
 
 void MainWindow::on_pushButton_clicked()
