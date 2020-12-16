@@ -1,8 +1,9 @@
 #include "../TEMU/temu/include/cpu/helper.h"
 #include "../TEMU/temu/include/monitor/monitor.h"
+#include "inst_decode.h"
 #include "ui_buffer.h"
 extern char assembly[80];
-
+extern uint32_t instr;
 /* invalid opcode */
 make_helper(inv) {
 
@@ -30,4 +31,5 @@ make_helper(temu_trap) {
 	temu_state = END;
 
 }
+
 

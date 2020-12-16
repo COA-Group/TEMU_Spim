@@ -138,3 +138,46 @@ decode_helper(d_multu) {
     decode_r_type(instr);
     sprintf(assembly, "multu   %s,   %s", REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
 }
+
+decode_helper(d_div){
+    decode_r_type(instr);
+    sprintf(assembly, "div   %s,   %s", REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
+
+decode_helper(d_divu){
+    decode_r_type(instr);
+    sprintf(assembly, "divu   %s,   %s", REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
+
+decode_helper(d_jalr){
+    decode_r_type(instr);
+    sprintf(assembly, "jalr   %s,   %s", REG_NAME(op_src1->reg), REG_NAME(op_dest->reg));
+}
+
+decode_helper(d_jr){
+    decode_r_type(instr);
+    sprintf(assembly, "jr   %s", REG_NAME(op_src1->reg));
+}
+
+decode_helper(d_break){
+    decode_trap(instr);
+    sprintf(assembly, "break   0x%x", op_src1->val);
+}
+
+decode_helper(d_M_C0){
+    decode_M_C0(instr);
+    if(op_src1->val == 0){
+        sprintf(assembly, "mfc0   %s    %s", REG_NAME(op_src2->reg) , CP0_NAME(op_dest->reg));
+    }
+    else if(op_src1->val == 4){
+        sprintf(assembly, "mft0   %s    %s", REG_NAME(op_src2->reg) , CP0_NAME(op_dest->reg));
+    }
+    else if(op_src1->val == 16 && (instr & FUNC_MASK) == 0x18){
+        sprintf(assembly, "eret");
+    }
+}
+
+decode_helper(d_syscall){
+    decode_trap(instr);
+    sprintf(assembly, "syscall");
+}

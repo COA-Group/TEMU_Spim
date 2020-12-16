@@ -20,6 +20,8 @@ private slots:
 
     void on_lineEdit_returnPressed();
 
+    void on_actionopen_triggered();
+
 private:
     Ui::MainWindow *ui;
     void action_cmd();

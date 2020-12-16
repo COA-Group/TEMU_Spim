@@ -3,7 +3,7 @@
 
 typedef void (*op_fun)(uint32_t);
 static decode_helper(d_2byte_esc);
-
+static make_helper(d_No1_esc);
 Operands ops_decoded;
 uint32_t instr;
 
@@ -11,11 +11,11 @@ uint32_t instr;
 /* TODO: Add more instructions!!! */
 
 op_fun f_opcode_table [64] = {
-    /* 0x00 */	d_2byte_esc, d_inv, d_inv, d_inv,
-    /* 0x04 */	d_inv, d_inv, d_inv, d_inv,
+    /* 0x00 */	d_2byte_esc, d_g, d_j, d_jal,
+    /* 0x04 */	d_beq, d_bne, d_blez, d_bgtz,
     /* 0x08 */	d_addi, d_addiu, d_slti, d_sltiu,
     /* 0x0c */	d_andi, d_ori, d_xori, d_lui,
-    /* 0x10 */	d_inv, d_inv, d_temu_trap, d_inv,
+    /* 0x10 */	d_M_C0, d_inv, d_temu_trap, d_decode_trap,
     /* 0x14 */	d_inv, d_inv, d_inv, d_inv,
     /* 0x18 */	d_inv, d_inv, d_inv, d_inv,
     /* 0x1c */	d_inv, d_inv, d_inv, d_inv,
@@ -32,11 +32,11 @@ op_fun f_opcode_table [64] = {
 op_fun f_2byte_opcode_table [64] = {
     /* 0x00 */	d_sll, d_inv, d_srl, d_sra,
     /* 0x04 */	d_sllv, d_inv, d_srlv, d_srav,
-    /* 0x08 */	d_inv, d_inv, d_inv, d_inv,
-    /* 0x0c */	d_inv, d_inv, d_inv, d_inv,
+    /* 0x08 */	d_jr, d_jalr, d_inv, d_inv,
+    /* 0x0c */	d_syscall, d_break, d_inv, d_inv,
     /* 0x10 */	d_mfhi, d_mthi, d_mflo, d_mtlo,
     /* 0x14 */	d_inv, d_inv, d_inv, d_inv,
-    /* 0x18 */	d_mult, d_multu, d_inv, d_inv,
+    /* 0x18 */	d_mult, d_multu, d_div, d_divu,
     /* 0x1c */	d_inv, d_inv, d_inv, d_inv,
     /* 0x20 */	d_add, d_addu, d_sub, d_subu,
     /* 0x24 */	d_and, d_or, d_xor, d_nor,

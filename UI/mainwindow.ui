@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1099</width>
+    <width>1267</width>
     <height>582</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>990</x>
+      <x>1160</x>
       <y>490</y>
       <width>89</width>
       <height>25</height>
@@ -27,41 +27,12 @@
      <string>PushButton</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>10</y>
-      <width>181</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>Register Info</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QTextBrowser" name="regInfo">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>331</width>
-      <height>481</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QTextBrowser" name="cmd">
     <property name="geometry">
      <rect>
       <x>360</x>
       <y>330</y>
-      <width>721</width>
+      <width>891</width>
       <height>151</height>
      </rect>
     </property>
@@ -71,7 +42,7 @@
      <rect>
       <x>360</x>
       <y>490</y>
-      <width>621</width>
+      <width>791</width>
       <height>31</height>
      </rect>
     </property>
@@ -81,10 +52,53 @@
      <rect>
       <x>360</x>
       <y>10</y>
-      <width>721</width>
+      <width>891</width>
       <height>312</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>341</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>RegInfo</string>
+     </attribute>
+     <widget class="QTextBrowser" name="regInfo">
+      <property name="geometry">
+       <rect>
+        <x>-1</x>
+        <y>-1</y>
+        <width>341</width>
+        <height>481</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>CP0Info</string>
+     </attribute>
+     <widget class="QTextBrowser" name="cp0Info">
+      <property name="geometry">
+       <rect>
+        <x>-1</x>
+        <y>-1</y>
+        <width>341</width>
+        <height>481</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -92,14 +106,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1099</width>
+     <width>1267</width>
      <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuopen">
     <property name="title">
-     <string>open</string>
+     <string>file</string>
     </property>
+    <addaction name="actionopen"/>
    </widget>
    <addaction name="menuopen"/>
   </widget>
@@ -112,6 +127,11 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionopen">
+   <property name="text">
+    <string>open</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

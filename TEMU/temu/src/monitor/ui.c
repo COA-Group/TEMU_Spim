@@ -17,9 +17,12 @@ extern WP *head;
 void cpu_exec(uint32_t);
 
 void display_reg();
+void display_cp0();
+
 static int cmd_c(char *args) {
 	cpu_exec(-1);
     display_reg();
+    display_cp0();
 	return 0;
 }
 
@@ -41,6 +44,7 @@ static int cmd_si(char *args) {
     if(arg == NULL){
         cpu_exec(1);
         display_reg();
+        display_cp0();
         return 0;
     }
 	int num;
@@ -55,6 +59,7 @@ static int cmd_si(char *args) {
         cpu_exec(1);
     }
     display_reg();
+    display_cp0();
     return 0;
 }
 
@@ -128,6 +133,7 @@ static int cmd_info(char *args) {
     {
         j += sprintf(result_buf + j , "Register Info:\n");
         display_reg();
+        display_cp0();
     }
     //w
     else if (strcmp(arg, "w") == 0){

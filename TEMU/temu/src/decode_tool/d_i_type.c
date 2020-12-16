@@ -97,7 +97,42 @@ decode_helper(d_slti) {
 }
 
 decode_helper(d_sltiu) {
-
     decode_imm_type_memory(instr);
     sprintf(assembly, "sltiu   %s,   %s,   %u", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->val);
+}
+
+decode_helper(d_beq){
+    decode_imm_type_compare(instr);
+    sprintf(assembly, "beq   %s,   %s,   %d", REG_NAME(op_src1->reg), REG_NAME(op_dest->reg), op_src2->val);
+}
+
+decode_helper(d_bgtz){
+    decode_imm_type_compare(instr);
+    sprintf(assembly, "bgtz   %s,   %d", REG_NAME(op_src1->reg), op_src2->val);
+}
+
+decode_helper(d_blez){
+    decode_imm_type_compare(instr);
+    sprintf(assembly, "blez   %s,   %d", REG_NAME(op_src1->reg), op_src2->val);
+}
+
+decode_helper(d_bne){
+    decode_imm_type_compare(instr);
+    sprintf(assembly, "bne   %s,   %s,   %d", REG_NAME(op_src1->reg), REG_NAME(op_dest->reg), op_src2->val);
+}
+
+decode_helper(d_g){
+    decode_imm_type_compare(instr);
+    if(op_dest->reg == 1){
+        sprintf(assembly, "bgez   %s,   %d", REG_NAME(op_src1->reg), op_src2->val);
+    }
+    else if(op_dest->reg == 0x11){
+        sprintf(assembly, "bgezal   %s,   %d", REG_NAME(op_src1->reg), op_src2->val);
+    }
+    else if(op_dest->reg == 0x10){
+        sprintf(assembly, "bltzal   %s,   %d", REG_NAME(op_src1->reg), op_src2->val);
+    }
+    else if(op_dest->reg == 0){
+        sprintf(assembly, "bltz   %s,   %u", REG_NAME(op_src1->reg), op_src2->val);
+    }
 }

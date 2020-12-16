@@ -14,17 +14,19 @@
 
 int temu_state = STOP;
 
+
 void exec(uint32_t);
 
 //addadd
 extern WP *head;
 uint32_t expr(char *e, bool *success);
+int delayed = 0;
 //addadd
 void print_bin_instr(uint32_t pc) {
 	int i;
     int l = sprintf(asm_buf, "0x%08x:\t", pc);
 	for(i = 3; i >= 0; i --) {
-		l += sprintf(asm_buf + l, "%02x ", instr_fetch(pc + i, 1));
+        l += sprintf(asm_buf + l, "%02x    ", instr_fetch(pc + i, 1));
 	}
     sprintf(asm_buf + l, "\t");
 }
@@ -54,6 +56,13 @@ void cpu_exec(volatile uint32_t n) {
 		/* Execute one instruction, including instruction fetch,
 		 * instruction decode, and the actual execution. */
 		exec(cpu.pc);
+        if(delayed == 1){
+            cpu.pc = cpu.next_PC;
+            delayed = 0;
+        }
+        if(temu_state == JUMP){
+            delayed = 1;
+        }
 
 		cpu.pc += 4;
 
@@ -86,34 +95,6 @@ void cpu_exec(volatile uint32_t n) {
             return;
         }
 	}
-    if(temu_state == RUNNING) {
-        temu_state = STOP;
-    }
-}
-
-void init_exec(){
-    temu_state = RUNNING;
-    volatile uint32_t n = -1;
-
-    for(; n > 0; n --) {
-        uint32_t pc_temp = cpu.pc;
-        /* Execute one instruction, including instruction fetch,
-         * instruction decode, and the actual execution. */
-        exec(cpu.pc);
-
-        cpu.pc += 4;
-        print_bin_instr(pc_temp);
-        strcat(asm_buf, assembly);
-        strcat(inst , asm_buf);
-        strcat(inst , "\n");
-        if(temu_state != RUNNING) {
-            strcpy(ui_inst , inst);
-            cpu.pc = 0x00000000;
-            temu_state = STOP;
-            return;
-        }
-    }
-
     if(temu_state == RUNNING) {
         temu_state = STOP;
     }

@@ -49,4 +49,18 @@ decode_helper(d_slti);
 make_helper(sltiu);
 decode_helper(d_sltiu);
 
+make_helper(beq);
+decode_helper(d_beq);
+
+make_helper(g);
+decode_helper(d_g);
+
+make_helper(bgtz);
+decode_helper(d_bgtz);
+
+make_helper(blez);
+decode_helper(d_blez);
+
+make_helper(bne);
+decode_helper(d_bne);
 #endif

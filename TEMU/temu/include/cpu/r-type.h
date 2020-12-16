@@ -67,4 +67,24 @@ decode_helper(d_mult);
 make_helper(multu);
 decode_helper(d_multu);
 
+make_helper(div);
+decode_helper(d_div);
+
+make_helper(divu);
+decode_helper(d_divu);
+
+make_helper(jalr);
+decode_helper(d_jalr);
+
+make_helper(jr);
+decode_helper(d_jr);
+
+make_helper(c_break);
+decode_helper(d_break);
+
+make_helper(M_C0);
+decode_helper(d_M_C0);
+
+make_helper(syscall);
+decode_helper(d_syscall);
 #endif

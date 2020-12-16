@@ -6,4 +6,6 @@ decode_helper(d_inv);
 
 make_helper(temu_trap);
 decode_helper(d_temu_trap);
+
+decode_helper(d_decode_trap);
 #endif

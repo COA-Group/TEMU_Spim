@@ -22,6 +22,7 @@
 #define INDEX_SIZE 26
 
 #define REG_NAME(index) regfile[index]
+#define CP0_NAME(index) cp0file[index]
 
 /* All function defined with 'make_helper' return the length of the operation. */
 #define make_helper(name) void name(uint32_t pc)

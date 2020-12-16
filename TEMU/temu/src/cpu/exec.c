@@ -3,7 +3,7 @@
 
 typedef void (*op_fun)(uint32_t);
 static make_helper(_2byte_esc);
-
+static make_helper(_No1_esc);
 Operands ops_decoded;
 uint32_t instr;
 
@@ -11,11 +11,11 @@ uint32_t instr;
 /* TODO: Add more instructions!!! */
 
 op_fun opcode_table [64] = {
-    /* 0x00 */	_2byte_esc, inv, inv, inv,
-    /* 0x04 */	inv, inv, inv, inv,
+    /* 0x00 */	_2byte_esc, g, j, jal,
+    /* 0x04 */	beq, bne, blez, bgtz,
     /* 0x08 */	addi, addiu, slti, sltiu,
     /* 0x0c */	andi, ori, xori, lui,
-    /* 0x10 */	inv, inv, temu_trap, inv,
+    /* 0x10 */	M_C0, inv, temu_trap, inv,
     /* 0x14 */	inv, inv, inv, inv,
     /* 0x18 */	inv, inv, inv, inv,
     /* 0x1c */	inv, inv, inv, inv,
@@ -32,11 +32,11 @@ op_fun opcode_table [64] = {
 op_fun _2byte_opcode_table [64] = {
     /* 0x00 */	sll, inv, srl, sra,
     /* 0x04 */	sllv, inv, srlv, srav,
-    /* 0x08 */	inv, inv, inv, inv,
-    /* 0x0c */	inv, inv, inv, inv,
+    /* 0x08 */	jr, jalr, inv, inv,
+    /* 0x0c */	syscall, c_break, inv, inv,
     /* 0x10 */	mfhi, mthi, mflo, mtlo,
     /* 0x14 */	inv, inv, inv, inv,
-    /* 0x18 */	mult, multu, inv, inv,
+    /* 0x18 */	mult, multu, div, divu,
     /* 0x1c */	inv, inv, inv, inv,
     /* 0x20 */	add, addu, sub, subu,
     /* 0x24 */	and, or, xor, nor,

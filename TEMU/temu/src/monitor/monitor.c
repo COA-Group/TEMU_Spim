@@ -7,6 +7,7 @@ uint8_t *hw_mem;
 CPU_state cpu;
 
 void display_reg();
+void display_cp0();
 void init_regex();
 void init_wp_pool();
 void init_ddr3();
@@ -36,7 +37,10 @@ char* init_monitor(int argc, char *argv[]) {
 	/* Initialize the watchpoint pool. */
 	init_wp_pool();
 
+    init_regs();
+
     display_reg();
+    display_cp0();
 	/* Display welcome message. */
     return welcome();
 }

@@ -43,7 +43,9 @@ SOURCES += \
     ../TEMU/temu/src/decode_tool/fake_exec.c \
     ../TEMU/temu/src/decode_tool/d_i_type.c \
     ../TEMU/temu/src/decode_tool/d_r_type.c \
-    ../TEMU/temu/src/decode_tool/d_special.c
+    ../TEMU/temu/src/decode_tool/d_special.c \
+    ../TEMU/temu/src/decode_tool/d_j_type.c \
+    ../TEMU/temu/src/cpu/j-type.c
 
 
 HEADERS += \
@@ -68,6 +70,7 @@ HEADERS += \
     ui_buffer.h \
     outputfunc.h \
     inst_decode.h \
+    ../TEMU/temu/include/cpu/j-type.h
 
 FORMS += \
         mainwindow.ui

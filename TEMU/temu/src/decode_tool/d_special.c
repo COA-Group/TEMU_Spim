@@ -2,11 +2,10 @@
 #include "../TEMU/temu/include/monitor/monitor.h"
 #include "ui_buffer.h"
 extern char assembly[80];
-
+extern uint32_t instr;
 /* stop temu */
 decode_helper(d_temu_trap) {
     sprintf(assembly, "HIT GOOD TEMP");
-    temu_state = END;
 }
 
 decode_helper(d_inv) {
@@ -23,6 +22,10 @@ decode_helper(d_inv) {
 2. Something is implemented incorrectly.\n", pc);
     printf("Find this pc value(0x%08x) in the disassembling result to distinguish which case it is.\n\n", pc);
 
-    assert(0);
+    //assert(0);
 }
 
+decode_helper(d_decode_trap) {
+    sprintf(assembly, "HIT DECODE TEMP");
+    temu_state = END;
+}
