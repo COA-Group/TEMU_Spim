@@ -8,9 +8,9 @@
 #define REG_INFO_LEN 64
 //all strings used in ui is here
 
-char result_buf[MAX_HELP * MAX_LEN];
-char cmd_inst[MAX_INST * MAX_LEN];
-char ui_inst[MAX_INST * MAX_LEN];
-char reg_buf[REG * REG_INFO_LEN];
-char cp0_buf[REG * REG_INFO_LEN / 2];
+extern char result_buf[MAX_HELP * MAX_LEN];
+extern char cmd_inst[MAX_INST * MAX_LEN];
+extern char ui_inst[MAX_INST * MAX_LEN];
+extern char reg_buf[REG * REG_INFO_LEN];
+extern char cp0_buf[REG * REG_INFO_LEN / 2];
 #endif // UI_BUFFER_H

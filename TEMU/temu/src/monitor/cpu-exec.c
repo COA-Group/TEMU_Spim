@@ -52,7 +52,20 @@ void cpu_exec(volatile uint32_t n) {
             fputc('.', stderr);
         }
 #endif
+        int check = (cp0_w(R_Status) & 0x2)>>1;
+        if(check == 1){
+            cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x0 << 1);
+        }
 
+        check = cpu.pc & 0x3;
+        printf("%d\n" , check);
+        if(check != 0){
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x04 << 2);
+            cp0_w(R_BadVAddr) = cpu.pc;
+            sprintf(result_buf, "AddressError Exception Occured in IF!\nThe program has been forced to exit");
+            temu_state = STOP;
+            break;
+        }
 		/* Execute one instruction, including instruction fetch,
 		 * instruction decode, and the actual execution. */
 		exec(cpu.pc);

@@ -177,7 +177,7 @@ decode_helper(d_M_C0){
     }
 }
 
-decode_helper(d_syscall){
+decode_helper(d_sys_call){
     decode_trap(instr);
     sprintf(assembly, "syscall");
 }

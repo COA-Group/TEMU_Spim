@@ -139,6 +139,13 @@ make_helper(add) {
     uint32_t temp = op_src1->val + op_src2->val;
     int j = 0;
     if((temp >> 31) != (op_src1->val >> 31) && (op_src1->val >> 31) == (op_src2->val >> 31)){
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x0C << 2);
+        cp0_w(R_EPC) = cpu.pc;
+        cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+        if(temu_state == JUMP){//in the delay slot
+            cp0_w(R_EPC) -= 4;
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+        }
         j = sprintf(result_buf, "IntegerOverflow Exception Occured!\n");
     }
     reg_w(op_dest->reg) = (uint32_t)temp;
@@ -162,6 +169,13 @@ make_helper(sub) {
     uint32_t temp = op_src1->val - op_src2->val;
     int j = 0;
     if((temp >> 31) != (op_src1->val >> 31) && (op_src1->val >> 31) != (op_src2->val >> 31)){
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x0C << 2);
+        cp0_w(R_EPC) = cpu.pc;
+        cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+        if(temu_state == JUMP){//in the delay slot
+            cp0_w(R_EPC) -= 4;
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+        }
         j = sprintf(result_buf, "IntegerOverflow Exception Occured!\n");
     }
     reg_w(op_dest->reg) = (uint32_t)temp;
@@ -261,6 +275,13 @@ make_helper(jr){
 make_helper(c_break){
     decode_trap(instr);
     sprintf(assembly, "break   0x%x", op_src1->val);
+    cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x09 << 2);
+    cp0_w(R_EPC) = cpu.pc;
+    cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+    if(temu_state == JUMP){//in the delay slot
+        cp0_w(R_EPC) -= 4;
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+    }
     sprintf(result_buf, "trigger break, there're some error occered, the program has exited");
     temu_state = STOP;
 }
@@ -284,8 +305,16 @@ make_helper(M_C0){
     }
 }
 
-make_helper(syscall){
+make_helper(sys_call){
     decode_trap(instr);
+    printf("syscall!");
     sprintf(assembly, "syscall");
+    cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x08 << 2);
+    cp0_w(R_EPC) = cpu.pc;
+    cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+    if(temu_state == JUMP){//in the delay slot
+        cp0_w(R_EPC) -= 4;
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+    }
     sprintf(result_buf, "syscall\ntrigger syscall, should generate ExeCode 0x08");
 }

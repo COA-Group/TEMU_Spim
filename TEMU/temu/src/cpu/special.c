@@ -18,8 +18,15 @@ make_helper(inv) {
 1. The instruction at pc = 0x%08x is not implemented.\n\
 2. Something is implemented incorrectly.\n", pc);
 	printf("Find this pc value(0x%08x) in the disassembling result to distinguish which case it is.\n\n", pc);
-
-	assert(0);
+    cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x0A << 2);
+    cp0_w(R_EPC) = cpu.pc;
+    cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+    if(temu_state == JUMP){//in the delay slot
+        cp0_w(R_EPC) -= 4;
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+    }
+    temu_state = STOP;
+    return 0;
 }
 
 /* stop temu */

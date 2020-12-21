@@ -85,6 +85,6 @@ decode_helper(d_break);
 make_helper(M_C0);
 decode_helper(d_M_C0);
 
-make_helper(syscall);
-decode_helper(d_syscall);
+make_helper(sys_call);
+decode_helper(d_sys_call);
 #endif

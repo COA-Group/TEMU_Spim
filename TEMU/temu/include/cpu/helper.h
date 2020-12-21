@@ -31,7 +31,6 @@
 static inline uint32_t instr_fetch(uint32_t addr, size_t len) {
 	return mem_read(addr, len);
 }
-
 /* shared by all helper function */
 extern Operands ops_decoded;
 

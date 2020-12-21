@@ -64,8 +64,18 @@ make_helper(lh) {
     decode_imm_type_memory(instr);
     uint32_t addr = op_src1->val + op_src2->val;
     uint32_t mask = 0x1;
-    if(addr & mask != 0){
-        sprintf(result_buf, "AddressError Exception Occured!\ncurrent position: lh   %s,   %d(%s)"
+    int check = addr & mask;
+    if(check != 0){
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x04 << 2);
+        cp0_w(R_BadVAddr) = addr;
+        cp0_w(R_EPC) = cpu.pc;
+        cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+        if(temu_state == JUMP){//in the delay slot
+            cp0_w(R_EPC) -= 4;
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+        }
+
+        sprintf(result_buf, "AddressError Exception Occured in MEM!\ncurrent position: lh   %s,   %d(%s)"
                 , REG_NAME(op_dest->reg), (int)op_src2->val, REG_NAME(op_src1->reg));
     }
     else{
@@ -77,12 +87,20 @@ make_helper(lh) {
 }
 
 make_helper(lhu) {
-
     decode_imm_type_memory(instr);
     uint32_t addr = op_src1->val + op_src2->val;
     uint32_t mask = 1;
-    if(addr & mask != 0){
-        sprintf(result_buf, "AddressError Exception Occured!\ncurrent position: lhu   %s,   %d(%s)"
+    int check = addr & mask;
+    if(check != 0){
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x04 << 2);
+        cp0_w(R_BadVAddr) = addr;
+        cp0_w(R_EPC) = cpu.pc;
+        cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+        if(temu_state == JUMP){//in the delay slot
+            cp0_w(R_EPC) -= 4;
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+        }
+        sprintf(result_buf, "AddressError Exception Occured in MEM!\ncurrent position: lhu   %s,   %d(%s)"
                 , REG_NAME(op_dest->reg), (int)op_src2->val, REG_NAME(op_src1->reg));
     }
     else{
@@ -97,9 +115,18 @@ make_helper(lw) {
 
     decode_imm_type_memory(instr);
     uint32_t addr = op_src1->val + op_src2->val;
-    uint32_t mask = 0x11;
-    if(addr & mask != 0){
-        sprintf(result_buf, "AddressError Exception Occured!\ncurrent position: lw   %s,   %d(%s)"
+    uint32_t mask = 0x3;
+    int check = addr & mask;
+    if(check != 0){
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x04 << 2);
+        cp0_w(R_BadVAddr) = addr;
+        cp0_w(R_EPC) = cpu.pc;
+        cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+        if(temu_state == JUMP){//in the delay slot
+            cp0_w(R_EPC) -= 4;
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+        }
+        sprintf(result_buf, "AddressError Exception Occured in MEM!\ncurrent position: lw   %s,   %d(%s)"
                 , REG_NAME(op_dest->reg), (int)op_src2->val, REG_NAME(op_src1->reg));
     }
     else{
@@ -125,8 +152,17 @@ make_helper(sh) {
     decode_imm_type_memory(instr);
     uint32_t addr = op_src1->val + op_src2->val;
     uint32_t mask = 1;
-    if(addr & mask != 0){
-        sprintf(result_buf, "AddressError Exception Occured!\ncurrent position: sh   %s,   %d(%s)"
+    int check = addr & mask;
+    if(check != 0){
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x05 << 2);
+        cp0_w(R_BadVAddr) = addr;
+        cp0_w(R_EPC) = cpu.pc;
+        cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+        if(temu_state == JUMP){//in the delay slot
+            cp0_w(R_EPC) -= 4;
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+        }
+        sprintf(result_buf, "AddressError Exception Occured in MEM!\ncurrent position: sh   %s,   %d(%s)"
                 , REG_NAME(op_dest->reg), (int)op_src2->val, REG_NAME(op_src1->reg));
     }
     else{
@@ -142,8 +178,17 @@ make_helper(sw) {
     decode_imm_type_memory(instr);
     uint32_t addr = op_src1->val + op_src2->val;
     uint32_t mask = 3;
-    if(addr & mask != 0){
-        sprintf(result_buf, "AddressError Exception Occured!\ncurrent position: sw   %s,   %d(%s)"
+    int check = addr & mask;
+    if(check != 0){
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x05 << 2);
+        cp0_w(R_BadVAddr) = addr;
+        cp0_w(R_EPC) = cpu.pc;
+        cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+        if(temu_state == JUMP){//in the delay slot
+            cp0_w(R_EPC) -= 4;
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+        }
+        sprintf(result_buf, "AddressError Exception Occured in MEM!\ncurrent position: sw   %s,   %d(%s)"
                 , REG_NAME(op_dest->reg), (int)op_src2->val, REG_NAME(op_src1->reg));
     }
     else{
@@ -159,8 +204,15 @@ make_helper(addi) {
     decode_imm_type_memory(instr);
     int temp = op_src1->val + op_src2->val;
     int j = 0;
-    if(temp < op_src1 || temp < op_src2){
+    if(temp < op_src1->val || temp < op_src2->val){
+        cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x0C << 2);
         j = sprintf(result_buf, "IntegerOverflow Exception Occured!\n");
+        cp0_w(R_EPC) = cpu.pc;
+        cp0_w(R_Status) = (cp0_w(R_Status) & 0xfffffffd) | (0x1 << 1);
+        if(temu_state == JUMP){//in the delay slot
+            cp0_w(R_EPC) -= 4;
+            cp0_w(R_Cause) = (cp0_w(R_Cause) & 0x7fffffff) | 0x80000000;
+        }
     }
     reg_w(op_dest->reg) = (uint32_t)temp;
     //printf("addi: src1 = %04x, src2 = %04x, dest = %04x\n", op_src1->val, op_src2->val, reg_w(op_dest->reg));
@@ -198,7 +250,7 @@ make_helper(sltiu) {
 make_helper(beq){
     decode_imm_type_compare(instr);
     int offset = (op_src1->val == op_dest->val)? (op_src2->val): 0;
-    cpu.next_PC = cpu.pc + offset;
+    cpu.next_PC = cpu.pc + offset;//it's exception will be checked when next_PC is executed. the same in the following instructions.
     sprintf(assembly, "beq   %s,   %s,   %d", REG_NAME(op_src1->reg), REG_NAME(op_dest->reg), op_src2->val);
     sprintf(result_buf, "current position: beq   %s,   %s,   %d\n next pc: %x", REG_NAME(op_src1->reg), REG_NAME(op_dest->reg), op_src2->val
             ,cpu.pc);
@@ -234,7 +286,7 @@ make_helper(bne){
 
 make_helper(g){
     decode_imm_type_compare(instr);
-    int offset;
+    int offset = 0;
     if(op_dest->reg == 1){
         offset = (op_src1->val < (1 << 16))? (op_src2->val): 0;
         sprintf(assembly, "bgez   %s,   %d", REG_NAME(op_src1->reg), op_src2->val);

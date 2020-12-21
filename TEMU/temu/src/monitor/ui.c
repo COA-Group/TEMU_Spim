@@ -41,23 +41,23 @@ static int cmd_x(char *args);
 static int cmd_si(char *args) {
     // get number
 	char *arg = strtok(NULL," ");
-    if(arg == NULL){
+    if(arg == NULL){//exec once
         cpu_exec(1);
+        //update registers
         display_reg();
         display_cp0();
         return 0;
     }
 	int num;
-    // input arg into num
     sscanf(arg, "%d", &num);
-    if(num < 1){
+    if(num < 1){//error occured
         strcpy(result_buf , "parameter cannot be less than 1(default is 1)\n");
-        //printf("parameter cannot be less than 1(default is 1)\n");
         return 0;
     }
-    for(int i = 0;i < num;i++){
+    for(int i = 0;i < num;i++){//exec n times
         cpu_exec(1);
     }
+    //update registers
     display_reg();
     display_cp0();
     return 0;
@@ -71,7 +71,6 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
     { "q", "Exit TEMU", cmd_q },
-//addadd
 	/* TODO: Add more commands */
     { "si", "Single step execution of instruction", cmd_si },
     { "info", "Print Register/WatchPoint", cmd_info },
@@ -79,7 +78,6 @@ static struct {
     { "d", "Delete watchpoint", cmd_d},
     { "x", "Scan buffer", cmd_x},
     { "p", "Expression evaluation", cmd_p}
-//addadd
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -87,11 +85,9 @@ static struct {
 static int cmd_help(char *args) {
 	/* extract the first argument */
 	char *arg = strtok(NULL, " ");
-	int i;
+    int i;
+    if(arg == NULL) {/* no argument given */
 
-
-	if(arg == NULL) {
-		/* no argument given */
 		for(i = 0; i < NR_CMD; i ++) {
             if(i == 0)
                 strcpy(result_buf , cmd_table[i].name);
@@ -104,24 +100,23 @@ static int cmd_help(char *args) {
         printf("%s ", result_buf);
 	}
 	else {
-		for(i = 0; i < NR_CMD; i ++) {
+        for(i = 0; i < NR_CMD; i ++) {/*print and return*/
 			if(strcmp(arg, cmd_table[i].name) == 0) {
-                //printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+
                 strcpy(result_buf , cmd_table[i].name);
                 strcat(result_buf , " - ");
                 strcat(result_buf , cmd_table[i].description);
                 strcat(result_buf , "\n");
 				return 0;
 			}
-		}
+        }/* error occured */
         strcpy(result_buf , "Unknown command '");
         strcat(result_buf , args);
         strcat(result_buf , "'\n");
-        //printf("Unknown command '%s'\n", arg);
 	}
 	return 0;
 }
-//addadd
+
 //print reg/watchpoint
 static int cmd_info(char *args) {
     /* extract the first argument */
@@ -218,6 +213,7 @@ static int cmd_p(char *args){
 
 
 static int cmd_x(char *args){
+    /* init */
     int i,k;
     int j = 0;
     int range;
@@ -226,16 +222,17 @@ static int cmd_x(char *args){
     if(num != NULL){
           exprl = strtok(NULL, " ");/*start address*/
     }
+
     bool success;
     success = true;
-    range = atoi(num);/*char change to int*/
-    //int addr = 0x00000000;
-    int addr = expr(exprl, &success);
-    if(success == false){
+    range = atoi(num);
+    int addr = expr(exprl, &success);/*calculate addr*/
+    if(success == false){/*Invalid address*/
        j += sprintf(result_buf + j , "error expression!\n");
        return 0;
     }
-    for(i = 0; i < range; i++){
+
+    for(i = 0; i < range; i++){/*Invalid address*/
         if(i%4 == 0){
             j += sprintf(result_buf + j , "[0x%08x]\t",addr + i * 4);
         }
