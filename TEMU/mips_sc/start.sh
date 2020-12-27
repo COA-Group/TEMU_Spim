@@ -1,3 +1,4 @@
+#!/bin/bash
 cd ../TEMU/mips_sc
 mips-sde-elf-gcc -v
 make clean

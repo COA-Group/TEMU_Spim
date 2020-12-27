@@ -15,7 +15,8 @@ MainWindow::MainWindow(int argc, char *argv[],QWidget *parent) :
     ui->regInfo->setLineWrapMode(QTextBrowser::NoWrap);
     ui->cp0Info->setLineWrapMode(QTextBrowser::NoWrap);
     ui->cmd->setLineWrapMode(QTextBrowser::NoWrap);
-
+    ui->pushButton->setDisabled(true);
+    ui->lineEdit->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -76,6 +77,11 @@ void MainWindow::on_actionopen_triggered()
     space_left -= sz;
 
     system(buf);
+    FILE *fp = fopen("../TEMU/entry", "rb");
+    if(fp == NULL){
+        ui->cmd->setText("open failed, pleace comfirm whether there is any bug in .S file.");
+        return;
+    }
     int argc = 1;
     char* argv[2];
     strcpy(ui_inst , "");
@@ -84,4 +90,6 @@ void MainWindow::on_actionopen_triggered()
     ui->regInfo->setText(reg_buf);
     ui->cp0Info->setText(cp0_buf);
     ui->text->setText(QString(ui_inst));
+    ui->pushButton->setDisabled(false);
+    ui->lineEdit->setDisabled(false);
 }

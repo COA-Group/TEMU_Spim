@@ -11,11 +11,19 @@ enum {
     HEX,          //hexadecimal number 十六进制0x开头
     REG,          //reg name 寄存器 $开头
 
+    LBK,
+    RBK,
+
     EQ,           //equal
     NEQ,          //not equal
 
     AND,          //与
     OR,           //或
+    ADD,
+    REV,
+    SLH,
+    SUB,          //-
+    STAR          //*
 };
 
 static struct rule {
@@ -29,14 +37,14 @@ static struct rule {
     {"\\|\\|",OR},                         // or
     {" +",	NOTYPE},		      // spaces
     {"==", EQ},			      // equal
-    {"\\+",'+'},                          // add
-    {"-",'-'},                            // sub
-    {"\\*",'*'},                          // multi
-    {"/",'/'},                            // divide
-    {"\\(",'('},                          // left bracket
-    {"\\)",')'},                          // right bracket
+    {"\\+",ADD},                          // add
+    {"-",SUB},                            // sub
+    {"\\*",STAR},                          // multi
+    {"/",SLH},                            // divide
+    {"\\(",LBK},                          // left bracket
+    {"\\)",RBK},                          // right bracket
     {"\\b[0-9]+\\b",NUM},               // number
-    {"!",'!'}                          //
+    {"!",REV}                          //
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -96,12 +104,12 @@ static bool make_token(char *e) {
 }
 
 bool check_parentheses(int p, int q) {
-    if (tokens[p].type == '(' && tokens[q].type == ')') {//there are a pair of brackets
+    if (tokens[p].type == LBK && tokens[q].type == RBK) {//there are a pair of brackets
         int buf[32];
         int i, j = 0, rec = -1;
         for (i = p; i <= q; i++) {//Make sure the brackets appear in pairs
-            if (tokens[i].type == '(') buf[j++] = i;
-            else if (tokens[i].type == ')') {
+            if (tokens[i].type == LBK) buf[j++] = i;
+            else if (tokens[i].type == RBK) {
                 if (j == 0) return false;
                 rec = buf[--j];
             }
@@ -118,15 +126,35 @@ int find_domn(int p, int q) {
     for(i = p; i <= q; i ++) {//check all tokens
         switch(tokens[i].type) {//check the caculate level by token type
             case REG: case NUM: case HEX: break;
-            case '(':
+            case LBK:
                 bracket_level ++;
                 break;
-            case ')':
+            case RBK:
                 bracket_level --;
                 if(bracket_level < 0) {
                     return 0;
                 }
                 break;
+            case STAR:
+                if(tokens[i-1].type > REG //'token before '*' is not a number'
+                    || i == 0) {//'*' is the first token
+                    //this is a pointer token , not a multiplication token
+                    if(tokens[i+1].type != LBK//not like *(<< expr >>)
+                            && q-p != 1){//not like *(num|hex|reg)
+                        //pointer token don't need to calculate
+                        break;
+                    }
+                }
+            case SUB:
+                if(tokens[i-1].type > REG //'token before '-' is not a number'
+                    || i == 0) {//'-' is the first token
+                    //this is a negative token , not a sub token
+                    if(tokens[i+1].type != LBK//not like - ( << expr >> )
+                            && q-p != 1){//not like - (num|hex|reg)
+                        //negative token don't need to calculate
+                        break;
+                    }
+                }
             default:
                 if(bracket_level == 0) {
                     if(dominated_op == -1) {
@@ -146,55 +174,19 @@ int eval(int p, int q) {
     else if (p == q) {// this is a value or a register
         switch (tokens[p].type) {//find result by the given token
             //char* rec = NULL;
-            char temp[5];
+            char temp[6];
             case NUM:
                 return atoi(tokens[p].str);
             case HEX:
                 return strtol(tokens[p].str, NULL, 16);
             case REG:
                 strcpy(temp, tokens[p].str);
-
-                if (!strcmp(temp, "$zero")) return cpu.gpr[0]._32;
-                else if (!strcmp(temp, "$at")) return cpu.gpr[1]._32;
-
-                else if (!strcmp(temp, "$v0")) return cpu.gpr[2]._32;
-                else if (!strcmp(temp, "$v1")) return cpu.gpr[3]._32;
-
-                else if (!strcmp(temp, "$a0")) return cpu.gpr[4]._32;
-                else if (!strcmp(temp, "$a1")) return cpu.gpr[5]._32;
-                else if (!strcmp(temp, "$a2")) return cpu.gpr[6]._32;
-                else if (!strcmp(temp, "$a3")) return cpu.gpr[7]._32;
-
-                else if (!strcmp(temp, "$t0")) return cpu.gpr[8]._32;
-                else if (!strcmp(temp, "$t1")) return cpu.gpr[9]._32;
-                else if (!strcmp(temp, "$t2")) return cpu.gpr[10]._32;
-                else if (!strcmp(temp, "$t3")) return cpu.gpr[11]._32;
-                else if (!strcmp(temp, "$t4")) return cpu.gpr[12]._32;
-                else if (!strcmp(temp, "$t5")) return cpu.gpr[13]._32;
-                else if (!strcmp(temp, "$t6")) return cpu.gpr[14]._32;
-                else if (!strcmp(temp, "$t7")) return cpu.gpr[15]._32;
-
-                else if (!strcmp(temp, "$s0")) return cpu.gpr[16]._32;
-                else if (!strcmp(temp, "$s1")) return cpu.gpr[17]._32;
-                else if (!strcmp(temp, "$s2")) return cpu.gpr[18]._32;
-                else if (!strcmp(temp, "$s3")) return cpu.gpr[19]._32;
-                else if (!strcmp(temp, "$s4")) return cpu.gpr[20]._32;
-                else if (!strcmp(temp, "$s5")) return cpu.gpr[21]._32;
-                else if (!strcmp(temp, "$s6")) return cpu.gpr[22]._32;
-                else if (!strcmp(temp, "$s7")) return cpu.gpr[23]._32;
-
-                else if (!strcmp(temp, "$t8")) return cpu.gpr[24]._32;
-                else if (!strcmp(temp, "$t9")) return cpu.gpr[25]._32;
-
-                else if (!strcmp(temp, "$k0")) return cpu.gpr[26]._32;
-                else if (!strcmp(temp, "$k1")) return cpu.gpr[27]._32;
-
-
-                else if (!strcmp(temp, "$gp")) return cpu.gpr[28]._32;
-                else if (!strcmp(temp, "$sp")) return cpu.gpr[29]._32;
-                else if (!strcmp(temp, "$fp")) return cpu.gpr[30]._32;
-                else if (!strcmp(temp, "$ra")) return cpu.gpr[31]._32;
-                else if (!strcmp(temp, "$pc")) return cpu.pc;
+                for(int i = 0 ; i < 32 ; i++){
+                    if(!strncmp(temp , regfile[i] , strlen(regfile[i]))){
+                        return reg_w(i);
+                    }
+                }
+                if (!strncmp(temp, "$pc" , 3)) return cpu.pc;
         }
     }
     else if (check_parentheses(p, q) == true) return eval(p + 1, q - 1);//there are a pair of brackets
@@ -204,13 +196,25 @@ int eval(int p, int q) {
             uint32_t val= eval(op + 1, q);
             return !val;
         }
+        if (tokens[op].type == SUB
+            && (tokens[op-1].type > REG ||//'token before '-' is not a number'
+                op == 0)) {//'-' is the first token
+            uint32_t val= eval(op + 1, q);
+            return -val;
+        }
+        if (tokens[op].type == STAR
+            && (tokens[op-1].type > REG ||//'token before '*' is not a number'
+                op == 0)) {//'*' is the first token
+            uint32_t val= eval(op + 1, q);
+            return mem_read(val , 4);
+        }
         int eval1 = eval(p, op - 1);
         int eval2 = eval(op + 1, q);
         switch(tokens[op].type) {
-            case '+': return eval1 + eval2;
-            case '-': return eval1 - eval2;
-            case '*': return eval1 * eval2;
-            case '/': return eval1 / eval2;
+            case ADD: return eval1 + eval2;
+            case SUB: return eval1 - eval2;
+            case STAR: return eval1 * eval2;
+            case SLH: return eval1 / eval2;
             case AND: return eval1 && eval2;
             case OR:  return eval1 || eval2;
             case EQ: return eval1 == eval2;
@@ -227,6 +231,8 @@ uint32_t expr(char *e, bool *success) {
         return 0;
     }
        *success =true;
-    return eval(0, nr_token - 1);
+    int ret = 0;
+    ret = eval(0 , nr_token-1);
+    return ret;
 }
 

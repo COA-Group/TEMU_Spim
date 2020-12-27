@@ -97,7 +97,6 @@ static int cmd_help(char *args) {
             strcat(result_buf , cmd_table[i].description);
             strcat(result_buf , "\n");
         }
-        printf("%s ", result_buf);
 	}
 	else {
         for(i = 0; i < NR_CMD; i ++) {/*print and return*/
@@ -166,14 +165,17 @@ static int cmd_w(char *args){
     if(args){
         num = expr(args, &success);
         if(!success){
-            j += sprintf(result_buf + j,"fail to parse expression: %s\n", args);
+            j += sprintf(result_buf + j,
+                "fail to parse expression: %s\n", args);
             return 0;
         }
         WP *wp = new_wp();
         j = sprintf(result_buf + j,"try %s\n", args);
         strcpy(wp->expr , args);
         wp->value = num;
-        j += sprintf(result_buf + j ,"set watchpoint successfully!\nwatchpoint no: %d\n", wp->NO);
+        j += sprintf(result_buf + j ,
+                "set watchpoint successfully!\nwatchpoint no: %d\n",
+                wp->NO);
     }
     return 0;
 }
@@ -182,16 +184,17 @@ static int cmd_w(char *args){
 static int cmd_d(char *args){
     WP *wp = head;
     int j = 0;
-    if(args)
-    {
+    if(args){
         while(wp != NULL){
             if(wp->NO == *args - '0'){
                 free_wp(wp);
-                j += sprintf(result_buf + j , "Delete watchpoint successfully\n");
+                j += sprintf(result_buf + j , 
+                        "Delete watchpoint successfully\n");
                 return 0;
             }
         }
-        j += sprintf(result_buf + j , "This watchpoint has not been used\n");
+        j += sprintf(result_buf + j , 
+                "This watchpoint has not been used\n");
     }
     return 0;
 }

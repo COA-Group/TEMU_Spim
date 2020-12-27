@@ -58,7 +58,6 @@ void cpu_exec(volatile uint32_t n) {
         }
 
         check = cpu.pc & 0x3;
-        printf("%d\n" , check);
         if(check != 0){
             cp0_w(R_Cause) = (cp0_w(R_Cause) & 0xffffff03) | (0x04 << 2);
             cp0_w(R_BadVAddr) = cpu.pc;
@@ -75,6 +74,7 @@ void cpu_exec(volatile uint32_t n) {
         }
         if(temu_state == JUMP){
             delayed = 1;
+            temu_state = RUNNING;
         }
 
 		cpu.pc += 4;
